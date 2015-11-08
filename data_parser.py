@@ -4,13 +4,6 @@ import argparse
 import itertools
 import re
 
-'''
-Date, UserID, ASIN, UserToItemRating, <static>ItemTitle, <static>ItemGroup, 
-<static>ItemSalesRank, <static>SimilarItemsList
-
-2000-5-22, A2O3PW57IFNUHV, B00000AU3R, 5, Batik, Music, 5392, B00002616C  B0000261KX  B00006AM8D  B000059OB9  B0000261O7
-'''
-
 class UserIdList:
     user_id_to_item_list = []
     file_name = ""
@@ -18,38 +11,19 @@ class UserIdList:
     def __init__(self, file_name):
         self.file_name = file_name
 
-    class AmazonItem:
-        date = ""
-        user_id = ""
-        asin = ""
-        user_to_item_rating = ""
-        item_title = ""
-        item_group = ""
-        item_sales_rank = ""
-        similar_items_list = ""
-        vote_rating = ""
-        helpful_rating = ""
-
-        # def __init__(self):
-        #     continue
+    # class AmazonItem:
+    #     date = ""
+    #     user_id = ""
+    #     asin = ""
+    #     user_to_item_rating = ""
+    #     item_title = ""
+    #     item_group = ""
+    #     item_sales_rank = ""
+    #     similar_items_list = ""
+    #     vote_rating = ""
+    #     helpful_rating = ""
 
     def parse_item_block(self, data):
-        # clear static item properties, independent of user 
-        asin = ""
-        sales_rank = ""
-        title = ""
-        avg_rating = ""
-        group = ""
-        similar = ""
-        temp_list = []
-        date = ""
-        customer_id = ""
-        user_rating = ""
-        vote = ""
-        helpful = ""
-        similar_list = []
-        similar_count = 0
-
         for item in data: #traverse list
             #clear item properties based on user input
             if 'ASIN:' in item:
@@ -81,6 +55,7 @@ class UserIdList:
                 user_rating = temp_list[4]
                 vote = temp_list[6]
                 helpful = temp_list[8].replace("\n", "")
+                # short print version
                 # print("{0}, {1}, {2}".format(customer_id, asin, user_rating))
 
                 # index: property
@@ -118,13 +93,6 @@ class UserIdList:
                 # print(key,list(group))  # uncomment to see what itertools.groupby does.
                 if not key:
                     self.parse_item_block(list(group))
-                    # data={}
-                    # for item in group:
-                    #     field,value=item.split(':')
-                    #     value=value.strip()
-                    #     data[field]=value
-                    # print('{FamilyN} {Name} {Age}'.format(**data))
-
 
     def isa_group_separator(self, line):
         # return line == "\n\n"
